@@ -1,0 +1,224 @@
+﻿@using MongoDBtest.Models;
+@model dynamic
+<!--IEnumerable<MongoDBtest.Models.Postandcomment>-->
+@{
+    ViewBag.Title = "Posts";
+}
+
+@ViewBag.res
+<head>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+        .de {
+            border: 3px solid #000000;
+            background-image: linear-gradient(to right, orange, yellow);
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .5) inset, 0 1px 0 #FFF;
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .5) inset, 0 1px 0 #FFF;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .5) inset, 0 1px 0 #FFF;
+        }
+
+        .h:hover {
+            background-image: linear-gradient(to left, orange, yellow);
+        }
+
+        .h1:hover {
+            background-color: #ff9999;
+        }
+
+        .co {
+            background-image: linear-gradient(to right, orange, white);
+        }
+
+        .li {
+            background-color: #66b3ff;
+        }
+
+        .c {
+            background-color: #ff6666;
+            padding: 6px 20px;
+            margin: 0;
+            border: 3px solid #000000;
+            font: bold 13px arial, helvetica, sans-serif;
+            border-radius: 3px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 2px 2px -1px rgba(0, 0, 0, .5), 0 1px 0 rgba(255, 255, 255, .3) inset;
+        }
+
+        .fa {
+            font-size: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+            .fa:hover {
+                color: darkblue;
+            }
+
+        p.excerpt {
+            border: 2px solid #0066FF;
+            background-color: #FFCC33;
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .t {
+            width: 1100px;
+            height: 200px;
+            padding: 20px 0;
+            text-align: center;
+            background-color: lightblue;
+            margin-top: 10px;
+            overflow: scroll;
+        }
+    </style>
+</head>
+
+<!-- navigation bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="lead"><a href=""><strong>@ViewBag.Username</strong></a></li>
+                <li><a href="/Home/Posts">Home</a></li>
+                <li><a href="/Home/Profile">Profile</a></li>
+                <li>
+                    <a href="@Url.Action("Logout","Home")">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<body>
+    <!-- main content -->
+    <div class="container-fluid">
+        <!-- postsform, publish and share-->
+        <div class="tab-content">
+            <form id="postsform" class="form-horizontal" method="post" action="/User/CreatePost" style="margin-bottom:30px">
+                <fieldset>
+                    <legend class="text-info">Posts and Share</legend>
+                </fieldset>
+                <div class="form-group" style="margin-left:10px">
+                    <label control-label>Hello @ViewBag.Username, Now is @DateTime.Now</label>
+                    <textarea class="form-control" rows="3" style="resize:none; min-width:100%" placeholder="Share what you are thinking here..." id="posts" name="posts" required></textarea>
+                    <button type="submit" class="btn btn-default c h1">Publish</button>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- everyone post will show here -->
+        <div class="tab-content">
+
+            <fieldset>
+                <legend class="text-info">Other Knowledge</legend>
+            </fieldset>
+            @foreach (Posts item in Model.Posts)
+            {
+
+                <div id="showformgroup" class="form-group" style="margin-left:10px">
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">
+                            <span id="shownickname" class="lead">@Html.DisplayFor(modelItem => item.Postsnikename)</span>
+                            <span id="showtime" style="margin-left:10px">@Html.DisplayFor(modelItem => item.Poststime)</span><br>
+
+                        </div>
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel-body">
+                                        <p id="showposts">@Html.DisplayFor(modelItem => item.Postscontent)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row t" id=@item._id style="display:none;">
+                                @foreach (Comments item2 in Model.Comments)
+                                {
+                                    if (item._id == item2.Post_id)
+                                    {
+                                        <div class="col-md-12"><p id=@TempData["tes"] class="excerpt"><b>Note:</b>@Html.DisplayFor(modelItem => item2.Content)</p></div>
+
+                                    }
+                                }
+                            </div>
+                            <hr>
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-md-1">
+
+                                    <form method="post" action="/Home/Likebut">
+                                        
+                                        <button type="submit" id="pid"  name="pid" value=@item._id class="fa fa-thumbs-up li"></button><div style="color:darkgrey">@item.PostLikes</div> 
+                                        
+                                    </form>
+                                </div>
+                                &emsp;&ensp;
+                                <div class="col-md-6">
+                                    <button type="button" class="de h" onclick="myFunction(this)" value=@item._id>Previous Comments</button>
+                                    <!-- Need compare if Comments.post_id == item._id then show the comments that the way is like showing the posts) -->
+                                </div>
+                            </div>
+
+                            <form method="post" action="/User/Createcomment">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <hr><textarea rows="3" cols="100" id="comment" name="comment" style="color:white;background:black;" placeholder="Write Commemts Here"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <input style="display:none;" type="text" name="tex" id="tex" value=@item._id>
+                                    <div class="col-md-12">
+                                        <button style="color:red;margin-left:0;" type="submit" class="de h">submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            @*<div id="showformgroup" class="form-group" style="margin-left:10px">
+                <lable control-label id="shownickname" class="lead" style="margin-left:10px">nickname</lable>
+                <time id="showtime" style="margin-left:10px">12:12</time>
+                <textarea class="form-control" rows="3" style="resize:none; min-width:50%" placeholder="Share what you are thinking here..." id="posts" name="posts"></textarea>
+                <button type="submit" class="btn btn-default">Like</button>
+                <button type="submit" class="btn btn-default">Comment</button>
+                </div>*@
+
+
+        </div>
+    </div>
+
+    <script>
+        function myFunction(y) {
+            var i = y.value;
+            var x = document.getElementById(i);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        function changeli(x) {
+            x.classList.toggle("fa-thumbs-down");
+        }
+    </script>
+</body>

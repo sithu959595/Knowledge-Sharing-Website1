@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+
+
+<!-- navigation bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/Home/Index">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- register form -->
+<form id="registerform" class="form-horizontal" method="post" action="/User/Create" style="margin-bottom:100px">
+
+    <fieldset>
+        <legend>Register Your Account</legend>
+    </fieldset>
+
+    <!-- firstname -->
+    <div class="form-group">
+        <label for="firstname" class="col-sm-2 control-label">First Name：</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="firstname" name="firstname">
+        </div>
+    </div>
+
+    <!-- lastname -->
+    <div class="form-group">
+        <label for="lastname" class="col-sm-2 control-label">Last Name：</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="lastname" name="lastname">
+        </div>
+    </div>
+
+    <!-- username -->
+    <div class="form-group">
+        <label for="usename" class="col-sm-2 control-label">Usename：</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="account" name="username">
+        </div>
+    </div>
+
+    <!-- password -->
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password：</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="password" name="password">
+        </div>
+        <div style="display: inline">
+            <label class="help-block">6-16 characters or numbers</label>
+        </div>
+    </div>
+
+    <!-- repassword -->
+    <div class="form-group">
+        <label for="repassword" class="col-sm-2 control-label">Password Again：</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="repassword" name="repassword">
+        </div>
+    </div>
+
+    <!-- nickname -->
+    <div class="form-group">
+        <label for="nickname" class="col-sm-2 control-label">Nickname：</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="nickname" name="nickname">
+        </div>
+    </div>
+
+    <!-- gender -->
+    <div class="form-group">
+        <label for="sex" class="col-sm-2 control-label">Gender：</label>
+        <div class="col-sm-4" style="margin-top:7px">
+            &nbsp; &nbsp;<input type="radio" name="gender" id="sex_m" value="Male"
+                                checked="checked"> &nbsp;Male &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp;<input type="radio" name="gender" id="sex_f" value="Female">
+            &nbsp;Female
+        </div>
+    </div>
+
+    <!-- email -->
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email：</label>
+        <div class="col-sm-4">
+            <input type="email" class="form-control" id="email" name="email"
+                   placeholder="Optional">
+        </div>
+        <div style="display: inline">
+            <label class="help-block">Optional</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+        </div>
+    </div>
+</form>
+
+
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+
+<!-- validation functions -->
+<script>
+    $().ready(function () {
+        // validate register form on keyup and submit
+        $("#registerform").validate({
+            rules: {
+                firstname: "required",
+                lastname: "required",
+                username: {
+                    required: true,
+                    minlength: 5,
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 16,
+                },
+                repassword: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 16,
+                    equalTo: "#password",
+                },
+                nickname: {
+                    required: true,
+                    minlength: 5,
+                },
+                email: {
+                    email: true,
+                },
+            },
+            messages: {
+                firstname: "Please enter your first name!",
+                lastname: "Please enter your last name!",
+                username: {
+                    required: "Please enter your username!",
+                    minlength: "Your username must consist of at least 5 characters!",
+                },
+                password: {
+                    required: "Please provide a password!",
+                    minlength: "Your password must consist of at least 6 characters!",
+                    maxlength: "Your password must consist of less than 16 characters!",
+                },
+                repassword: {
+                    required: "Please enter your confirm password!",
+                    minlength: "Your password must consist of at least 6 characters!",
+                    maxlength: "Your password must consist of less than 16 characters!",
+                    equalTo: "#password",
+                },
+                nickname: {
+                    required: "Please enter your nickname!",
+                    minlength: "Your nickname must consist of at least 5 characters!",
+                },
+                email: {
+                    email: "Please enter a correct email!",
+                },
+            },
+        });
+    });
+</script>
